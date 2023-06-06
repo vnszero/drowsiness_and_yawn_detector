@@ -1,9 +1,13 @@
 # drowsiness_detector
-drowsiness detector with computer vision and artificial intelligence to monitor drivers' journey
+drowsiness and yawn detector with computer vision and artificial intelligence to monitor drivers' journey
 
 --
 
 This work is based on the articles below:
+
+--
+
+About drowsiness:
 
 https://pyimagesearch.com/2017/05/08/drowsiness-detection-opencv/
 
@@ -18,6 +22,8 @@ https://towardsdatascience.com/drowsiness-detection-system-in-real-time-using-op
 https://www.researchgate.net/publication/353062771_Driver_drowsiness_detection_system_with_opencv_and_keras
 
 --
+
+About yawn:
 
 https://www.geeksforgeeks.org/yawn-detection-using-opencv-and-dlib/
 
