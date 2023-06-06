@@ -1,4 +1,4 @@
-# drowsiness_detector
+# drowsiness_and_yawn_detector
 drowsiness and yawn detector with computer vision and artificial intelligence to monitor drivers' journey
 
 --
