@@ -1,0 +1,6 @@
+pip install numpy    
+pip install opencv-python
+pip install time
+pip install pyttsx3
+pip install dlib
+pip install scipy
