@@ -3,7 +3,7 @@ imutils
 numpy  
 opencv-python
 scipy
-time
+python-time
 
 shape_predictor_68_face_landmarks:
 https://raw.githubusercontent.com/davisking/dlib-models/master/shape_predictor_68_face_landmarks.dat.bz2
