@@ -63,7 +63,7 @@ args = vars(ap.parse_args())
 # blink and then a second constant for the number of consecutive
 # frames the eye must be below the threshold for to set off the
 # alarm
-EYE_AR_THRESH = 0.3
+EYE_AR_THRESH = 0.21
 EYE_AR_CONSEC_FRAMES = 48
 
 # initialize the frame counter as well as a boolean used to
@@ -127,9 +127,23 @@ while True:
 		cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 0), 1)
 		
 		lip_dist = cal_yawn(shape)
-		print(lip_dist)
 		if lip_dist > 22 : 
-			cv2.putText(frame, f'User Yawning!',(frame.shape[1]//2 - 170 ,frame.shape[0]//2),cv2.FONT_HERSHEY_SIMPLEX,2,(0,0,200),2)
+			if not ALARM_ON:
+					ALARM_ON = True
+					
+					# check to see if an alarm file was supplied,
+					# and if so, start a thread to have the alarm
+					# sound played in the background
+					if args["alarm"] != "":
+						t = Thread(target=sound_alarm,
+							args=(args["alarm"],))
+						t.deamon = True
+						t.start()
+
+			cv2.putText(frame, f'YAWN ALERT!',(10,300),cv2.FONT_HERSHEY_SIMPLEX,0.7,(0,0,255),2)
+		
+		else:
+			ALARM_ON = False
 		
         # check to see if the eye aspect ratio is below the blink
 		# threshold, and if so, increment the blink frame counter
@@ -167,6 +181,8 @@ while True:
 		# thresholds and frame counters
 		cv2.putText(frame, "EAR: {:.2f}".format(ear), (300, 30),
 			cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+		cv2.putText(frame, "LIP: {:.2f}".format(lip_dist), (300, 300),
+			cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)
 	
 	# show the frame
 	cv2.imshow("Frame", frame)
