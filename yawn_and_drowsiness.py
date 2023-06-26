@@ -11,26 +11,17 @@ from imutils.video import VideoStream
 from imutils import face_utils
 from threading import Thread
 import numpy as np
-import playsound
 import argparse
 import imutils
 import time
 import dlib
 import cv2
-from pydub import AudioSegment
-from pydub.playback import play
 import pygame
 
 def play_audio(file_path):
 	pygame.mixer.init()
 	pygame.mixer.music.load(file_path)
 	pygame.mixer.music.play()
-
-	# # Load the audio file
-    # audio = AudioSegment.from_wav(file_path)
-
-    # # Play the audio file
-    # play(audio)
 
 def cal_yawn(shape): 
 	top_lip = shape[50:53]
@@ -150,10 +141,6 @@ while True:
 				# and if so, start a thread to have the alarm
 				# sound played in the background
 				if args["alarm"] != "":
-					# t = Thread(target=sound_alarm,
-						# args=(args["alarm"],))
-					# t.deamon = True
-
 					t = Thread(target=play_audio, args=(args["alarm"],))
 					t.start()
 
