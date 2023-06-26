@@ -6,5 +6,5 @@ pip install cmake
 pip install dlib
 pip install scipy
 pip install --upgrade imutils
-pip install playsound
+pip install pygame
 conda install -c conda-forge dlib

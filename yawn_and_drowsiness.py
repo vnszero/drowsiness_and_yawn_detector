@@ -70,10 +70,12 @@ args = vars(ap.parse_args())
 # alarm
 EYE_AR_THRESH = 0.21
 EYE_AR_CONSEC_FRAMES = 48
+MOUTH_AR_CONSEC_FRAMES = 24
 
 # initialize the frame counter as well as a boolean used to
 # indicate if the alarm is going off
-COUNTER = 0
+YAWN_COUNTER = 0
+DROWSINESS_COUNTER = 0
 YAWN_ALARM_ON = False
 DROWSINESS_ALARM_ON = False
 
@@ -133,30 +135,37 @@ while True:
 		cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 0), 1)
 		
 		lip_dist = cal_yawn(shape)
-		if lip_dist > 22 : 
-			if not YAWN_ALARM_ON:
-				YAWN_ALARM_ON = True
-					
-				# check to see if an alarm file was supplied,
-				# and if so, start a thread to have the alarm
-				# sound played in the background
-				if args["alarm"] != "":
-					t = Thread(target=play_audio, args=(args["alarm"],))
-					t.start()
+		if lip_dist > 22 :
+			YAWN_COUNTER += 1
+			
+			# if the mouth were opened for a sufficient number of frames
+			# then sound the alarm
+			if YAWN_COUNTER >= MOUTH_AR_CONSEC_FRAMES:
 
-			cv2.putText(frame, f'YAWN ALERT!',(10,300),cv2.FONT_HERSHEY_SIMPLEX,0.7,(0,0,255),2)
+				if not YAWN_ALARM_ON:
+					YAWN_ALARM_ON = True
+						
+					# check to see if an alarm file was supplied,
+					# and if so, start a thread to have the alarm
+					# sound played in the background
+					if args["alarm"] != "":
+						t = Thread(target=play_audio, args=(args["alarm"],))
+						t.start()
+
+				cv2.putText(frame, f'YAWN ALERT!',(10,300),cv2.FONT_HERSHEY_SIMPLEX,0.7,(0,0,255),2)
 		
 		else:
+			YAWN_COUNTER = 0
 			YAWN_ALARM_ON = False
 		
         # check to see if the eye aspect ratio is below the blink
 		# threshold, and if so, increment the blink frame counter
 		if ear < EYE_AR_THRESH:
-			COUNTER += 1
+			DROWSINESS_COUNTER += 1
 			
-			# if the eyes were closed for a sufficient number of
+			# if the eyes were closed for a sufficient number of frames
 			# then sound the alarm
-			if COUNTER >= EYE_AR_CONSEC_FRAMES:
+			if DROWSINESS_COUNTER >= EYE_AR_CONSEC_FRAMES:
 				# if the alarm is not on, turn it on
 				if not DROWSINESS_ALARM_ON:
 					DROWSINESS_ALARM_ON = True
@@ -175,7 +184,7 @@ while True:
 		# otherwise, the eye aspect ratio is not below the blink
 		# threshold, so reset the counter and alarm
 		else:
-			COUNTER = 0
+			DROWSINESS_COUNTER = 0
 			DROWSINESS_ALARM_ON = False
 		
         # draw the computed eye aspect ratio on the frame to help
