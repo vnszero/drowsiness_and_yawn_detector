@@ -4,6 +4,7 @@ numpy
 opencv-python
 scipy
 python-time
+cmake
 
 shape_predictor_68_face_landmarks:
 https://raw.githubusercontent.com/davisking/dlib-models/master/shape_predictor_68_face_landmarks.dat.bz2

@@ -2,5 +2,9 @@ pip install numpy
 pip install opencv-python
 pip install time
 pip install pyttsx3
+pip install cmake
 pip install dlib
 pip install scipy
+pip install --upgrade imutils
+pip install playsound
+conda install -c conda-forge dlib
