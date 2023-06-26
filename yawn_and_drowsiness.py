@@ -17,6 +17,20 @@ import imutils
 import time
 import dlib
 import cv2
+from pydub import AudioSegment
+from pydub.playback import play
+import pygame
+
+def play_audio(file_path):
+	pygame.mixer.init()
+	pygame.mixer.music.load(file_path)
+	pygame.mixer.music.play()
+
+	# # Load the audio file
+    # audio = AudioSegment.from_wav(file_path)
+
+    # # Play the audio file
+    # play(audio)
 
 def cal_yawn(shape): 
 	top_lip = shape[50:53]
@@ -69,7 +83,8 @@ EYE_AR_CONSEC_FRAMES = 48
 # initialize the frame counter as well as a boolean used to
 # indicate if the alarm is going off
 COUNTER = 0
-ALARM_ON = False
+YAWN_ALARM_ON = False
+DROWSINESS_ALARM_ON = False
 
 # initialize dlib's face detector (HOG-based) and then create
 # the facial landmark predictor
@@ -128,22 +143,24 @@ while True:
 		
 		lip_dist = cal_yawn(shape)
 		if lip_dist > 22 : 
-			if not ALARM_ON:
-					ALARM_ON = True
+			if not YAWN_ALARM_ON:
+				YAWN_ALARM_ON = True
 					
-					# check to see if an alarm file was supplied,
-					# and if so, start a thread to have the alarm
-					# sound played in the background
-					if args["alarm"] != "":
-						t = Thread(target=sound_alarm,
-							args=(args["alarm"],))
-						t.deamon = True
-						t.start()
+				# check to see if an alarm file was supplied,
+				# and if so, start a thread to have the alarm
+				# sound played in the background
+				if args["alarm"] != "":
+					# t = Thread(target=sound_alarm,
+						# args=(args["alarm"],))
+					# t.deamon = True
+
+					t = Thread(target=play_audio, args=(args["alarm"],))
+					t.start()
 
 			cv2.putText(frame, f'YAWN ALERT!',(10,300),cv2.FONT_HERSHEY_SIMPLEX,0.7,(0,0,255),2)
 		
 		else:
-			ALARM_ON = False
+			YAWN_ALARM_ON = False
 		
         # check to see if the eye aspect ratio is below the blink
 		# threshold, and if so, increment the blink frame counter
@@ -154,16 +171,14 @@ while True:
 			# then sound the alarm
 			if COUNTER >= EYE_AR_CONSEC_FRAMES:
 				# if the alarm is not on, turn it on
-				if not ALARM_ON:
-					ALARM_ON = True
+				if not DROWSINESS_ALARM_ON:
+					DROWSINESS_ALARM_ON = True
 					
 					# check to see if an alarm file was supplied,
 					# and if so, start a thread to have the alarm
 					# sound played in the background
 					if args["alarm"] != "":
-						t = Thread(target=sound_alarm,
-							args=(args["alarm"],))
-						t.deamon = True
+						t = Thread(target=play_audio, args=(args["alarm"],))
 						t.start()
 						
 				# draw an alarm on the frame
@@ -174,7 +189,7 @@ while True:
 		# threshold, so reset the counter and alarm
 		else:
 			COUNTER = 0
-			ALARM_ON = False
+			DROWSINESS_ALARM_ON = False
 		
         # draw the computed eye aspect ratio on the frame to help
 		# with debugging and setting the correct eye aspect ratio
