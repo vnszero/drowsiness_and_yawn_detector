@@ -8,3 +8,5 @@ pip install scipy
 pip install --upgrade imutils
 pip install pygame
 conda install -c conda-forge dlib
+
+python yawn_and_drowsiness.py --shape-predictor shape_predictor_68_face_landmarks.dat --alarm alarm.wav
