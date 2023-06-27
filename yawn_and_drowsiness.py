@@ -33,10 +33,6 @@ def cal_yawn(shape):
 	distance = dist.euclidean(top_mean,low_mean)
 	
 	return distance
-
-def sound_alarm(path):
-	# play an alarm sound
-	playsound.playsound(path)
 	
 def eye_aspect_ratio(eye):
 	# compute the euclidean distances between the two sets of
