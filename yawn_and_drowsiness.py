@@ -126,9 +126,12 @@ while True:
 		leftEyeHull = cv2.convexHull(leftEye)
 		rightEyeHull = cv2.convexHull(rightEye)
 		lip = shape[48:60]
-		cv2.drawContours(frame,[lip],-1,(0, 165, 255),thickness=3)
-		cv2.drawContours(frame, [leftEyeHull], -1, (0, 255, 0), 1)
-		cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 0), 1)
+
+		############### use this code to see contours ###############
+		# cv2.drawContours(frame,[lip],-1,(0, 255, 0),thickness=2)
+		# cv2.drawContours(frame, [leftEyeHull], -1, (0, 255, 0), 1)
+		# cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 0), 1)
+		############### use this code to see contours ###############
 		
 		lip_dist = cal_yawn(shape)
 		if lip_dist > 22 :

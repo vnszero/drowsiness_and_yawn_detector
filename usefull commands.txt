@@ -1,3 +1,11 @@
+# installing anaconda
+wget https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh
+sha256sum Anaconda3-2022.05-Linux-x86_64.sh
+bash Anaconda3-2022.05-Linux-x86_64.sh
+echo 'export PATH="/home/<username>/anaconda3/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+
+# installing libs
 pip install numpy    
 pip install opencv-python
 pip install time
@@ -9,4 +17,5 @@ pip install --upgrade imutils
 pip install pygame
 conda install -c conda-forge dlib
 
+# run project
 python yawn_and_drowsiness.py --shape-predictor shape_predictor_68_face_landmarks.dat --alarm alarm.wav
